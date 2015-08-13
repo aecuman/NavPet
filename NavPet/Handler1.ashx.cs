@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using JsonServices;
 using JsonServices.Web;
+using NavPet.Models;
 
 namespace NavPet
 {
