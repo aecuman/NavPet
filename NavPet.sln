@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavPet", "NavPet\NavPet.csproj", "{6B7C9CD2-5B08-44CE-A478-8E7BC778D02A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavPet.Tests", "NavPet.Tests\NavPet.Tests.csproj", "{24C6E1D6-FE64-48ED-B485-A80C0A7943A4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6B7C9CD2-5B08-44CE-A478-8E7BC778D02A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B7C9CD2-5B08-44CE-A478-8E7BC778D02A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B7C9CD2-5B08-44CE-A478-8E7BC778D02A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B7C9CD2-5B08-44CE-A478-8E7BC778D02A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24C6E1D6-FE64-48ED-B485-A80C0A7943A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24C6E1D6-FE64-48ED-B485-A80C0A7943A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24C6E1D6-FE64-48ED-B485-A80C0A7943A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24C6E1D6-FE64-48ED-B485-A80C0A7943A4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
