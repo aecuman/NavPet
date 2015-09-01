@@ -39,12 +39,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JsonServices">
-      <HintPath>..\..\MvcApplicationNav\packages\Newtonsoft.Json.7.0.1\lib\net45\JsonServices.dll</HintPath>
-    </Reference>
-    <Reference Include="JsonServices.Web">
-      <HintPath>..\..\MvcApplicationNav\packages\Newtonsoft.Json.7.0.1\lib\net45\JsonServices.Web.dll</HintPath>
-    </Reference>
     <Reference Include="LyphTEC.MongoSimpleMembership, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\LyphTEC.MongoSimpleMembership.1.0.2\lib\net40\LyphTEC.MongoSimpleMembership.dll</HintPath>
       <Private>True</Private>
@@ -225,9 +219,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Handler1.ashx.cs">
-      <DependentUpon>Handler1.ashx</DependentUpon>
-    </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\IStation.cs" />
     <Compile Include="Models\Station.cs" />
@@ -243,7 +234,6 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Handler1.ashx" />
     <Content Include="Scripts\angular-route.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\bootstrap.js" />
