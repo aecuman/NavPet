@@ -1,0 +1,139 @@
+﻿<html data-ng-app="crudModule"> 
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+    <body>  
+        <h4>StationDash</h4>
+    <table id="tblContainer" data-ng-controller="CRUD_OperController">  
+        <tr>  
+            <td>  
+                <table style="border: solid 2px Green; padding: 5px;">  
+                    <tr style="height: 30px; background-color: skyblue; color: maroon;">  
+                        <th></th>  
+                        <th>Id</th>  
+                        <th>Name</th>  
+                        <th>Company</th>  
+                        <th>loc</th>  
+                        <th>Petrol</th>  
+                        <th>Diesel</th>  
+                        <th>Contact</th>
+                        <th>Date</th>  
+                        <th></th>  
+                        <th></th>  
+                    </tr>  
+                     <tbody data-ng-repeat="stud in Stations">  
+                        <tr>  
+                            <td></td>  
+                            <td><span>{{stud.Id}}</span></td>  
+                            <td><span>{{stud.Name}}</span></td>  
+                            <td><span>{{stud.Company}}</span></td>  
+                            <td><span>{{stud.loc}}</span></td>  
+                            <td><span>{{stud.Petrol}}</span></td>  
+                            <td><span>{{stud.Diesel}}</span></td>  
+                            <td><span>{{stud.Contact}}</span></td> 
+                            <td><span>{{stud.Date}}</span></td> 
+                            <td>  
+                                <input type="button" id="Edit" value="Edit" data-ng-click="get(stud)" /></td>  
+  
+                            <td>  
+                                <input type="button" id="Delete" value="Delete" data-ng-click="delete(stud)" /></td>  
+                        </tr>  
+                    </tbody>  
+                 </table>  
+  
+            </td>  
+        </tr>  
+        <tr>  
+            <td>  
+                <div style="color: red;">{{Message}}</div>  
+                <table style="border: solid 4px Red; padding: 2px;">  
+                    <tr>  
+                        <td></td>  
+                        <td>  
+                            <span>Id</span>  
+                        </td>  
+                        <td>  
+                            <input type="text" id="Id" readonly="readonly" data-ng-model="Id" />  
+                        </td>  
+                    </tr>  
+                    <tr>  
+                        <td></td>  
+                        <td>  
+                            <span>Name</span>  
+                        </td>  
+                        <td>  
+                            <input type="text" id="Name" required data-ng-model="Name" />  
+                        </td>  
+                    </tr>  
+                    <tr>  
+                        <td></td>  
+                        <td>  
+                            <span>Company</span>  
+                        </td>  
+                        <td>  
+                            <input type="text" id="Company" required data-ng-model="Company" />  
+                        </td>  
+                    </tr>  
+                    <tr>  
+                        <td></td>  
+                        <td>  
+                            <span>Loc</span>  
+                        </td>  
+                        <td>  
+                            <input type="text" id="loc" required data-ng-model="loc" />  
+                        </td>  
+                    </tr>  
+                    <tr>  
+                        <td></td>  
+                        <td>  
+                            <span>Petrol</span>  
+                        </td>  
+                        <td>  
+                            <input type="text" id="Petrol" required data-ng-model="Petrol" />  
+                        </td>  
+                    </tr> 
+                    <tr>  
+                        <td></td>  
+                        <td>  
+                            <span>Diesel</span>  
+                        </td>  
+                        <td>  
+                            <input type="text" id="Diesel" required data-ng-model="Diesel" />  
+                        </td>  
+                    </tr> 
+                    <tr>  
+                        <td></td>  
+                        <td>  
+                            <span>Contact</span>  
+                        </td>  
+                        <td>  
+                            <input type="text" id="Contact" required data-ng-model="Contact" />  
+                        </td>  
+                    </tr>  
+                    <tr>  
+                        <td></td>  
+                       
+                        <td>  
+                            <input type="button" id="save" value="Save" data-ng-click="save()" />  
+  
+                            <input type="button" id="Clear" value="Clear" data-ng-click="clear()" />  
+                        </td>  
+                    </tr>  
+                </table>  
+  
+            </td>  
+        </tr>  
+  
+        </table>
+        </body>
+    </html>
+<script src="~/Scripts/angular.js"></script>  
+<script src="~/Scripts/angular-route.js"></script>  
+<script src="~/Scripts/myAjs/Module.js"></script>  
+<script src="~/Scripts/myAjs/Service.js"></script>  
+<script src="~/Scripts/myAjs/Controller.js"></script>  

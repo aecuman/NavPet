@@ -1,0 +1,50 @@
+﻿
+@using (Html.BeginForm("Index", "Station", FormMethod.Post, new { @encType = "multipart/form-data" }))
+{
+    <p>
+        Find by name: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>
+}
+ </p>
+<table class="sortable">
+    <tr>
+        <td></td>
+        <td>
+            <span>First Name</span>
+        </td>
+
+        <td>
+            <span>Last Name</span>
+        </td>
+        <td>
+            <span>Photo</span>
+        </td>
+        <td>
+            <span>Actions</span>
+        </td>
+
+    </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td></td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Petrol)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Diesel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnleadedExtra) 
+              </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.By)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastModified)
+            </td>
+            </tr>
+    }
+            </table>
+            
