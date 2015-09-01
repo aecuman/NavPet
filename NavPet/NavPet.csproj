@@ -1047,7 +1047,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\StationWeb\Index.cshtml" />
-    <Content Include="Views\Station\Index.cshtml" />
     <Content Include="Views\Station\Create.cshtml" />
     <Content Include="Views\Shared\_layoutAccount.cshtml" />
   </ItemGroup>
