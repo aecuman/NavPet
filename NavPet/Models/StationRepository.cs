@@ -23,7 +23,7 @@ namespace NavPet.Models
     {
         if (string.IsNullOrWhiteSpace(connection))
        {
-            connection = "mongodb://localhost:27017";
+           connection = "mongodb://appharbor_l8cvvgk9:2v46l1vq7p9d228dvbqk1o2oua@ds031203.mongolab.com:31203/appharbor_l8cvvgk9";
        }
         MongoClient mongoClient = new MongoClient(connection);        
         _database = mongoClient.GetServer().GetDatabase("NavPet");
