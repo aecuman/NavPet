@@ -6,50 +6,108 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver.Builders;
+using System.Configuration;
 
 namespace NavPet.Models
 {
     public class StationRepository:IStationRepository
     {
-        MongoServer _server;
-        //MongoDatabase _database;
-        MongoCollection<Station> _station;
-
         public StationRepository()
             : this("")
         {
         }
-        public StationRepository(string con)
-        {
-            if (string.IsNullOrWhiteSpace(con))
+        MongoServer _server;
+        MongoDatabase _database;
+        MongoCollection<Station> _station;
+         public StationRepository(string connection)
+    {
+        if (string.IsNullOrWhiteSpace(connection))
+       {
+            connection = "mongodb://localhost:27017";
+       }
+        MongoClient mongoClient = new MongoClient(connection);        
+        _database = mongoClient.GetServer().GetDatabase("NavPet");
+       _station = _database.GetCollection<Station>("Stations");
+    
+       // Reset database and add some default entries
+       _station.RemoveAll();
+        //MongoServer _server;
+        //MongoDatabase _database;
+        /// <summary>
+        /// 
+        /// </summary>
+       
+        /*
+readonly MongoDatabase mongoDatabase;
+
+MongoCollection<Station> _station;
+        public StationRepository()
             {
-                con = "mongodb://localhost:27017";
-            }
-            // var _server = MongoClient.(con);
-
-            var client = new MongoClient("mongodb://localhost:27017");
-            _server = client.GetServer();
-            var _database = _server.GetDatabase("test");
-            var _station = _database.GetCollection<Station>("station");
-
-            for (int index = 1; index < 5; index++)
-            {
-                Station station1 = new Station
-                {
-                    Petrol = string.Format("{0},{0}{0}{0}", index),
-                    Name = string.Format("test{0}", index),
-                    Diesel = string.Format("{0},{0}{0}{0}", index),
-                    Contact = string.Format("{0}{0}{0}{0} {0}{0}{0} {0}{0}{0}", index),
-                  //  Email = string.Format((@"^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$"), index)
-                };
-                AddStation(station1);
-            }
-
+           mongoDatabase=RetreiveMongohqDb();
         }
+        private MongoDatabase RetreiveMongohqDb()
+        {
+            MongoClient mongoClient = new MongoClient(
+                new MongoUrl(ConfigurationManager.ConnectionStrings
+                 ["conn"].ConnectionString));
+          //  MongoServer server = mongoClient.GetServer();
+            return mongoClient.GetServer().GetDatabase("test");
+            _station = mongoDatabase.GetCollection<Station>("station");
+             //_station= mongoDatabase.GetCollection("station");
+           
+           // _station.RemoveAll();
+        /* }
+            : this("")
+         {
+         }
+         public StationRepository(string con)
+         { 
+             if (string.IsNullOrWhiteSpace(con))
+         {
+             con = "mongodb://localhost:27017";
+         }
+             // var _server = MongoClient.(con);
+             MongoClient mongoClient = new MongoClient(con);
+             MongoServer server = mongoClient.GetServer();
+             var _database=mongoClient.GetServer().GetDatabase("test");
+            /* var client = new MongoClient("mongodb://localhost:27017");
+             _server = client.GetServer();
+             var _database = _server.GetDatabase("test");
+             var _station = _database.GetCollection<Station>("station");
+            */
+             /*for (int index = 1; index < 5; index++)
+             {
+                 Station station1 = new Station
+                 {
+                     //Petrol = string.Format("{0},{0}{0}{0}", index),
+                    // Name = string.Format("test{0}", index),
+                     //Diesel = string.Format("{0},{0}{0}{0}", index),
+                    // Contact = string.Format("{0}{0}{0}{0} {0}{0}{0} {0}{0}{0}", index),
+                   //  Email = string.Format((@"^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$"), index)
+                 };
+                 AddStation(station1);
+                
+             }*/
+
+             
+         }
 
         public IEnumerable<Station> GetAllStations()
         {
-            return _station.FindAll();
+          /*  List<Station> model = new List<Station>();
+            var stationList = mongoDatabase.GetCollection("station").FindAll().AsEnumerable();
+            model = (from station in stationList
+                     select new Station
+                     {
+                         Id = station["_id"].AsString,
+                         Petrol = station["Petrol"].AsString,
+                         Diesel = station["Diesel"].AsString,
+                         //loc = station(["loc"].AsBsonDocument).AsString,
+
+                     }).ToList();
+            return model;*/
+          
+           return _station.FindAll();
         }
         public Station GetStation(string Id)
         {
@@ -75,13 +133,13 @@ namespace NavPet.Models
             IMongoQuery query = Query.EQ("_id", Id);
 
             IMongoUpdate update = Update
-                .Set("Name", item.Name)
-                .Set("Company", item.Company)
-                .Set("loc", item.loc)
+
+                //.Set("UnleadedExtra", item.UnleadedExtra)
                 .Set("Petrol", item.Petrol)
-                .Set("Diesel", item.Diesel)
-                .Set("LastModified", DateTime.UtcNow)
-                .Set("Contact", item.Contact);
+                .Set("Diesel", item.Diesel);
+                //.Set("UnleadedExtra",item.UnleadedExtra)
+               // .Set("LastModified", DateTime.UtcNow)
+                //.Set("By", item.By);
                
             item.LastModified = DateTime.UtcNow;
             WriteConcernResult result = _station.Update(query, update);

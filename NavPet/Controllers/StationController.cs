@@ -1,46 +1,108 @@
-﻿using System;
+﻿using NavPet.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using NavPet.Models;
+using System.Web;
+using System.Web.Mvc;
 
 namespace NavPet.Controllers
 {
-    public class StationController : ApiController
+    public class StationController : Controller
     {
         public static readonly IStationRepository _station = new StationRepository();
-        public IQueryable<Station> Get()
+        //
+        // GET: /Station/
+
+        public ActionResult Index()
         {
-            return _station.GetAllStations().AsQueryable();
+            return View(_station.GetAllStations().AsQueryable());
         }
-        public Station Get(string Id)
+
+        //
+        // GET: /Station/Details/5
+
+        public ActionResult Details(int id)
         {
-            Station station = _station.GetStation(Id);
-            if (station == null)
+            return View();
+        }
+
+        //
+        // GET: /Station/Create
+
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Station/Create
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        
+        public ActionResult Create(Station station)
+        {
+            if (ModelState.IsValid)
             {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                // TODO: Add insert logic here
+                _station.AddStation(station);
+                return RedirectToAction("Create");
             }
-            return station;
-        }
-        public Station Post(Station value)
-        {
-            Station station = _station.AddStation(value);
-            return station;
-        }
-        public void Put(string Id, Station value)
-        {
-            if (!_station.UpdateStation(Id, value))
+            
             {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                return View(station);
             }
         }
-        public void Delete(string Id)
+
+        //
+        // GET: /Station/Edit/5
+
+        public ActionResult Edit(int id)
         {
-            if (!_station.RemoveStation(Id))
+            return View();
+        }
+
+        //
+        // POST: /Station/Edit/5
+
+        [HttpPost]
+        public ActionResult Edit(int id, FormCollection collection)
+        {
+            try
             {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                // TODO: Add update logic here
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        //
+        // GET: /Station/Delete/5
+
+        public ActionResult Delete(int id)
+        {
+            return View();
+        }
+
+        //
+        // POST: /Station/Delete/5
+
+        [HttpPost]
+        public ActionResult Delete(int id, FormCollection collection)
+        {
+            try
+            {
+                // TODO: Add delete logic here
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
             }
         }
     }

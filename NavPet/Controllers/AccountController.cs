@@ -11,6 +11,8 @@ using WebMatrix.WebData;
 using NavPet.Filters;
 using NavPet.Models;
 using MongoDB.AspNet.Identity;
+using System.Net;
+using System.Data;
 
 namespace NavPet.Controllers
 {
@@ -26,8 +28,11 @@ namespace NavPet.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
+            
+            ViewBag.ReturnUrl = returnUrl; 
+            
             return View();
+           
         }
 
         //
@@ -36,11 +41,11 @@ namespace NavPet.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginModel model, string returnUrl)
+        public ActionResult Login(LoginModel model)
         {
             if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
             {
-                return RedirectToLocal(returnUrl);
+                return RedirectToActionPermanent("Create","Station");
             }
 
             // If we got this far, something failed, redisplay form
@@ -62,7 +67,7 @@ namespace NavPet.Controllers
 
         //
         // GET: /Account/Register
-
+        [Authorize]
         [AllowAnonymous]
         public ActionResult Register()
         {
@@ -71,7 +76,7 @@ namespace NavPet.Controllers
 
         //
         // POST: /Account/Register
-
+        [Authorize]
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -235,7 +240,7 @@ namespace NavPet.Controllers
             {
                 // If the current user is logged in add the new account
                 OAuthWebSecurity.CreateOrUpdateAccount(result.Provider, result.ProviderUserId, User.Identity.Name);
-                return RedirectToLocal(returnUrl);
+                return RedirectToActionPermanent("Create","Station");
             }
             else
             {
@@ -326,7 +331,7 @@ namespace NavPet.Controllers
             ViewBag.ShowRemoveButton = externalLogins.Count > 1 || OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
             return PartialView("_RemoveExternalLoginsPartial", externalLogins);
         }
-
+       
         #region Helpers
         private ActionResult RedirectToLocal(string returnUrl)
         {

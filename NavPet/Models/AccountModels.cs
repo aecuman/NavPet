@@ -9,15 +9,8 @@ using MongoDB.AspNet;
 
 namespace NavPet.Models
 {
-  /*  public class MongoDbContext : IDbContext
-    {
-        public UsersStore()
-            : base("DefaultConnection")
-        {
-        }
-
-        public DbSet<UserProfile> UserProfiles { get; set; }
-    }*/
+  
+    
     
     [Table("UserProfile")]
     public class UserProfile
@@ -26,6 +19,7 @@ namespace NavPet.Models
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
         public string UserName { get; set; }
+       
     }
 
     public class RegisterExternalLoginModel
@@ -87,6 +81,12 @@ namespace NavPet.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+        [Required]        
+        public string Company { get; set; }
+        [Required]
+        public string loc { get; set; }
+        [Required]
+        public string Contact { get; set; }
     }
 
     public class ExternalLogin
