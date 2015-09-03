@@ -1049,6 +1049,7 @@
     <Content Include="Views\StationWeb\Index.cshtml" />
     <Content Include="Views\Station\Create.cshtml" />
     <Content Include="Views\Shared\_layoutAccount.cshtml" />
+    <Content Include="Views\Account\ManageRole.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -19,6 +19,11 @@ namespace NavPet.Models
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
         public string UserName { get; set; }
+        
+        public string Company { get; set; }
+        
+        public string loc { get; set; }
+        public string Contact { get; set; }
        
     }
 

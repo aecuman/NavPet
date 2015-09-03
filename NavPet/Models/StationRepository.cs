@@ -24,9 +24,11 @@ namespace NavPet.Models
         if (string.IsNullOrWhiteSpace(connection))
        {
            connection = "mongodb://appharbor_zch30534:vierusjv3qn2ma2imfo3sqqos2@ds035623.mongolab.com:35623/appharbor_zch30534";
+          // connection = "mongodb://localhost:27017";
        }
         MongoClient mongoClient = new MongoClient(connection);
         _database = mongoClient.GetServer().GetDatabase("appharbor_zch30534");
+        //_database = mongoClient.GetServer().GetDatabase("NavPet");
        _station = _database.GetCollection<Station>("Stations");
     
        // Reset database and add some default entries

@@ -13,6 +13,8 @@ using NavPet.Models;
 using MongoDB.AspNet.Identity;
 using System.Net;
 using System.Data;
+using WebMatrix.WebData;
+using LyphTEC.MongoSimpleMembership.Extensions;
 
 namespace NavPet.Controllers
 {
@@ -76,6 +78,7 @@ namespace NavPet.Controllers
 
         //
         // POST: /Account/Register
+        
         [Authorize]
         [HttpPost]
         [AllowAnonymous]
