@@ -3,48 +3,112 @@
     ViewBag.Title = "Register";
 }
 
-<hgroup class="title">
+
     <h1>@ViewBag.Title.</h1>
     <h2>Create a new account.</h2>
-</hgroup>
+    <hr />
 
-@using (Html.BeginForm()) {
+
+    
+       
+
+
+            <legend>Registration Form</legend>
+<div style="float:right">
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false" type="text/javascript"></script>
+    <script>
+        var mapcode;
+        var diag;
+        function initialize() {
+            mapcode = new google.maps.Geocoder();
+            var lnt = new google.maps.LatLng(0.3356, 32.5825);
+            var diagChoice = {
+                zoom: 14,
+                center: lnt,
+                diagId: google.maps.MapTypeId.ROADMAP
+            }
+            diag = new google.maps.Map(document.getElementById('map-canvas'), diagChoice);
+        }
+        function codeAddress() {
+            var add = document.getElementById('address').value;
+            mapcode.geocode({ 'address': add }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    diag.setCenter(results[0].geometry.location);
+                    var hint = new google.maps.Marker({
+                        diag: diag,
+                        
+                        position: results[0].geometry.location
+                    });
+                } else {
+                    alert('This code is not successful ' + status);
+                }
+            });
+
+        }
+        google.maps.event.addDomListener(window, 'load', initialize);
+       
+
+    </script>
+    
+        <div id="panel">
+            <input id="address" type="text" value="Kampala">
+            <input type="button" value="Search" onclick="codeAddress()">
+        </div>
+        <div id="map-canvas" style="width: 600px; height: 390px; border: 5px solid #5E5454;">
+        </div>
+</div>
+<div>
+@using (Html.BeginForm())
+{
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.ConfirmPassword)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Company, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Company, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label" for="loc">location (lat,long)</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.loc, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Contact, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Contact, new { @class = "form-control" })
+        </div>
+    </div>
+   
+   
 
-    <fieldset>
-        <legend>Registration Form</legend>
-        <ol>
-            <li>
-                @Html.LabelFor(m => m.UserName)
-                @Html.TextBoxFor(m => m.UserName)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Password)
-                @Html.PasswordFor(m => m.Password)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.ConfirmPassword)
-                @Html.PasswordFor(m => m.ConfirmPassword)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Company)
-                @Html.TextBoxFor(m => m.Company)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.loc)
-                @Html.TextBoxFor(m => m.loc)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Contact)
-                @Html.TextBoxFor(m => m.Contact)
-            </li>
+    
+  
+       
             
-        </ol>
-        <input type="submit" value="Register" />
-    </fieldset>
+ 
 }
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+        }
