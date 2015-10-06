@@ -1,0 +1,38 @@
+﻿@model IEnumerable<NavPet.Models.Userprofiles.Profiles>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_layoutAccount.cshtml";
+}
+
+<h2>Index</h2>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Company)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.loc)
+        </th>
+
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Company)
+            </td>
+
+
+            <td>
+                @Html.DisplayFor(modelItem => item.loc)
+            </td>
+
+        </tr>
+    }
+</table>

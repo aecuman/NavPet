@@ -1,6 +1,7 @@
 ﻿@model NavPet.Models.LocalPasswordModel
 @{
     ViewBag.Title = "Manage Account";
+    Layout = "~/Views/Shared/_layoutAccount.cshtml";
 }
 
 <hgroup class="title">
@@ -20,12 +21,7 @@ else
     @Html.Partial("_SetPasswordPartial")
 }
 
-<section id="externalLogins">
-    @Html.Action("RemoveExternalLogins")
 
-    <h3>Add an external login</h3>
-    @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
-</section>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
