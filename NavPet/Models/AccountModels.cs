@@ -86,12 +86,8 @@ namespace NavPet.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-        [Required]        
-        public string Company { get; set; }
-        [Required]
-        public string loc { get; set; }
-        [Required]
-        public string Contact { get; set; }
+        
+     
     }
 
     public class ExternalLogin

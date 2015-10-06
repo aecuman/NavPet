@@ -1,20 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Transactions;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-using DotNetOpenAuth.AspNet;
 using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
-using NavPet.Filters;
 using NavPet.Models;
-using MongoDB.AspNet.Identity;
-using System.Net;
-using System.Data;
-using WebMatrix.WebData;
-using LyphTEC.MongoSimpleMembership.Extensions;
+using System.Web.Helpers;
+
 
 namespace NavPet.Controllers
 {
@@ -92,7 +84,9 @@ namespace NavPet.Controllers
                 {
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
                     WebSecurity.Login(model.UserName, model.Password);
-                    return RedirectToAction("Index", "Home");
+                  
+                    
+                    return RedirectToAction("Create", "Station");
                 }
                 catch (MembershipCreateUserException e)
                 {
@@ -211,131 +205,62 @@ namespace NavPet.Controllers
             return View(model);
         }
 
-        //
-        // POST: /Account/ExternalLogin
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public ActionResult ExternalLogin(string provider, string returnUrl)
+      /*  public ActionResult EditProfile(RegisterModel model)
         {
-            return new ExternalLoginResult(provider, Url.Action("ExternalLoginCallback", new { ReturnUrl = returnUrl }));
-        }
-
-        //
-        // GET: /Account/ExternalLoginCallback
-
-        [AllowAnonymous]
-        public ActionResult ExternalLoginCallback(string returnUrl)
-        {
-            AuthenticationResult result = OAuthWebSecurity.VerifyAuthentication(Url.Action("ExternalLoginCallback", new { ReturnUrl = returnUrl }));
-            if (!result.IsSuccessful)
+            bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
+            ViewBag.HasLocalPassword = hasLocalAccount;
+            ViewBag.ReturnUrl = Url.Action("Manage");
+            if (hasLocalAccount)
             {
-                return RedirectToAction("ExternalLoginFailure");
-            }
+                if (ModelState.IsValid)
+                {
+                    // ChangePassword will throw an exception rather than return false in certain failure scenarios.
+                    bool changePasswordSucceeded;
+                    try
+                    {
+                        changePasswordSucceeded = WebSecurity.ChangePassword(User.Identity.Name, model., model.NewPassword);
+                    }
+                    catch (Exception)
+                    {
+                        changePasswordSucceeded = false;
+                    }
 
-            if (OAuthWebSecurity.Login(result.Provider, result.ProviderUserId, createPersistentCookie: false))
-            {
-                return RedirectToLocal(returnUrl);
-            }
-
-            if (User.Identity.IsAuthenticated)
-            {
-                // If the current user is logged in add the new account
-                OAuthWebSecurity.CreateOrUpdateAccount(result.Provider, result.ProviderUserId, User.Identity.Name);
-                return RedirectToActionPermanent("Create","Station");
+                    if (changePasswordSucceeded)
+                    {
+                        return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
+                    }
+                }
             }
             else
             {
-                // User is new, ask for their desired membership name
-                string loginData = OAuthWebSecurity.SerializeProviderUserId(result.Provider, result.ProviderUserId);
-                ViewBag.ProviderDisplayName = OAuthWebSecurity.GetOAuthClientData(result.Provider).DisplayName;
-                ViewBag.ReturnUrl = returnUrl;
-                return View("ExternalLoginConfirmation", new RegisterExternalLoginModel { UserName = result.UserName, ExternalLoginData = loginData });
-            }
-        }
-
-        //
-        // POST: /Account/ExternalLoginConfirmation
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public ActionResult ExternalLoginConfirmation(RegisterExternalLoginModel model, string returnUrl)
-        {
-            string provider = null;
-            string providerUserId = null;
-
-            if (User.Identity.IsAuthenticated || !OAuthWebSecurity.TryDeserializeProviderUserId(model.ExternalLoginData, out provider, out providerUserId))
-            {
-                return RedirectToAction("Manage");
-            }
-
-            if (ModelState.IsValid)
-            {
-                var userId = WebSecurity.GetUserId(model.UserName);
-
-                if (userId == -1)
+                // User does not have a local password so remove any validation errors caused by a missing
+                // OldPassword field
+                ModelState state = ModelState["OldPassword"];
+                if (state != null)
                 {
-                    // TODO : Add custom user profile logic
-
-                    // this will create a non-local account
-                    OAuthWebSecurity.CreateOrUpdateAccount(provider, providerUserId, model.UserName);
-                    OAuthWebSecurity.Login(provider, providerUserId, createPersistentCookie: false);
-
-                    return RedirectToLocal(returnUrl);
+                    state.Errors.Clear();
                 }
-                else
+
+                if (ModelState.IsValid)
                 {
-                    ModelState.AddModelError("UserName", "User name already exists. Please enter a different user name.");
+                    try
+                    {
+                        WebSecurity.CreateAccount(User.Identity.Name, model.NewPassword);
+                        return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
+                    }
+                    catch (Exception)
+                    {
+                        ModelState.AddModelError("", String.Format("Unable to create local account. An account with the name \"{0}\" may already exist.", User.Identity.Name));
+                    }
                 }
             }
 
-            ViewBag.ProviderDisplayName = OAuthWebSecurity.GetOAuthClientData(provider).DisplayName;
-            ViewBag.ReturnUrl = returnUrl;
             return View(model);
-        }
-        
-
-        //
-        // GET: /Account/ExternalLoginFailure
-
-        [AllowAnonymous]
-        public ActionResult ExternalLoginFailure()
-        {
-            return View();
-        }
-
-        [AllowAnonymous]
-        [ChildActionOnly]
-        public ActionResult ExternalLoginsList(string returnUrl)
-        {
-            ViewBag.ReturnUrl = returnUrl;
-            return PartialView("_ExternalLoginsListPartial", OAuthWebSecurity.RegisteredClientData);
-        }
-
-        [ChildActionOnly]
-        public ActionResult RemoveExternalLogins()
-        {
-            ICollection<OAuthAccount> accounts = OAuthWebSecurity.GetAccountsFromUserName(User.Identity.Name);
-            List<ExternalLogin> externalLogins = new List<ExternalLogin>();
-            foreach (OAuthAccount account in accounts)
-            {
-                AuthenticationClientData clientData = OAuthWebSecurity.GetOAuthClientData(account.Provider);
-
-                externalLogins.Add(new ExternalLogin
-                {
-                    Provider = account.Provider,
-                    ProviderDisplayName = clientData.DisplayName,
-                    ProviderUserId = account.ProviderUserId,
-                });
-            }
-
-            ViewBag.ShowRemoveButton = externalLogins.Count > 1 || OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
-            return PartialView("_RemoveExternalLoginsPartial", externalLogins);
-        
-       
-        }
+        }*/
         #region Helpers
         private ActionResult RedirectToLocal(string returnUrl)
         {
@@ -411,5 +336,19 @@ namespace NavPet.Controllers
             }
         }
         #endregion
+
+
+        [Authorize]
+       
+       
+        public ActionResult ManageRoles()
+        {
+            ValidateRequest = true;
+            
+            // If we got this far, something failed, redisplay form
+            return View();
+        }
+       
+        
     }
 }
