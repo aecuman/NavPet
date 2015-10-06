@@ -15,7 +15,7 @@ namespace NavPet.Models.Userprofiles
         {
         }
         MongoServer _server2;
-        MongoDatabase _database2;
+        MongoDatabase _database;
         MongoCollection<Profiles> _profiles;
         public ProfilesRepository(string connection)
         {
@@ -25,9 +25,9 @@ namespace NavPet.Models.Userprofiles
                // connection = "mongodb://localhost:27017";
             }
             MongoClient mongoClient = new MongoClient(connection);
-            //_database = mongoClient.GetServer().GetDatabase("appharbor_zch30534");
-            _database2 = mongoClient.GetServer().GetDatabase("Station");
-            _profiles = _database2.GetCollection<Profiles>("UserProfile");
+            _database = mongoClient.GetServer().GetDatabase("appharbor_256pbwmk");
+           // _database2 = mongoClient.GetServer().GetDatabase("Station");
+            _profiles = _database.GetCollection<Profiles>("UserProfile");
 
         }
         public IEnumerable<Profiles> GetAllProfiles()
